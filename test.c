@@ -1,7 +1,5 @@
 #include <stdio.h>
-
-void free_csv_line( char **parsed );
-char **parse_csv( const char *line );
+#include "csv.h"
 
 int main(void)
 {
