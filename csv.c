@@ -4,8 +4,10 @@
 
 void free_csv_line( char **parsed )
 {
-  for ( ; *parsed; parsed++ )
-    free( *parsed );
+  char **ptr;
+
+  for ( ptr = parsed; *ptr; ptr++ )
+    free( *ptr );
 
   free( parsed );
 }
@@ -140,6 +142,7 @@ char **parse_csv( const char *line )
       break;
   }
 
+  *bptr = NULL;
   free( tmp );
   return buf;
 }

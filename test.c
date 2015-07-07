@@ -12,5 +12,7 @@ int main(void)
   for ( ptr = parsed; *ptr; ptr++ )
     printf( "%s\n", *ptr );
 
+  free_csv_line( parsed );
+
   return 1;
 }
