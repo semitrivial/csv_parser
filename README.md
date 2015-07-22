@@ -1,8 +1,8 @@
 # csv_parser
 
-csv_parser is a simple C function for parsing CSV.
+csv_parser is a simple C library for parsing CSV.
 
-The csv_parser function takes a single row from a CSV file (as a string),
+The parse_cvs function takes a single row from a CSV file (as a string),
 and outputs an array of strings corresponding to the values in
 the columns in that row.
 
