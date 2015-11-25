@@ -68,7 +68,7 @@ char **parse_csv( const char *line )
   if ( !buf )
     return NULL;
 
-  len = strlen(line);
+  len = strlen( line );
 
   tmp = malloc( len+1 );
 
