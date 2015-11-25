@@ -55,7 +55,8 @@ char **parse_csv( const char *line )
 {
   char **buf, **bptr, *tmp, *tptr;
   const char *ptr;
-  int fieldcnt, fQuote, len, fEnd;
+  int fieldcnt, fQuote, fEnd;
+  size_t len;
 
   fieldcnt = count_fields( line );
 
