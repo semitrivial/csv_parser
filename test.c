@@ -4,6 +4,7 @@
 
 int test_parse_csv(void);
 int test_split_on_unescaped_newlines(void);
+int test_fread_csv_line(void);
 
 void run_test(const char *name, int test(void)) {
   int result;
@@ -20,6 +21,8 @@ int main(void) {
   run_test("test_parse_csv", test_parse_csv);
 
   run_test("test_split_on_unescaped_newlines", test_split_on_unescaped_newlines);
+
+  run_test("test_fread_csv_line", test_fread_csv_line);
 }
 
 int test_parse_csv(void)
@@ -70,6 +73,16 @@ int test_split_on_unescaped_newlines(void) {
   ||   strcmp(result[2], "Foo, \"B\na\nr\", Baz")
   ||   strcmp(result[3], "Foo, \"B\"\"ar\", Baz") ) {
     printf( "test_split_on_unescaped_newlines failed! (2)\n" );
+    return 0;
+  }
+
+  return 1;
+}
+
+int test_fread_csv_line(void) {
+  FILE *fp = fopen("test.csv", "r");
+
+  if ( strcmp( fread_csv_line(fp, 1024, NULL), "foo,bar,baz" ) ) {
     return 0;
   }
 

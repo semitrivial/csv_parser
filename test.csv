@@ -1,0 +1,16 @@
+foo,bar,baz
+foo,"bar",baz
+foo,"b""ar",baz
+foo,"b
+a
+r",baz
+foo,"
+
+b
+
+""a""
+
+r
+
+",baz
+foo,bar,baz
