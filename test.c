@@ -1,7 +1,17 @@
 #include <stdio.h>
+#include <string.h>
 #include "csv.h"
 
-int main(void)
+void test_parse_csv(void);
+void test_split_on_unescaped_newlines(void);
+
+int main(void) {
+  test_parse_csv();
+
+  test_split_on_unescaped_newlines();
+}
+
+void test_parse_csv(void)
 {
   /*
    * Test string adapted from https://en.wikipedia.org/wiki/Comma-separated_values
@@ -16,5 +26,28 @@ int main(void)
 
   free_csv_line( parsed );
 
-  return 1;
+  return;
+}
+
+void test_split_on_unescaped_newlines(void) {
+  const char *txt =
+    "Blah, blah, blah\n"
+    "Foo, \"Bar\", \"Foo, Bar\"\n"
+    "Foo, \"B\na\nr\", Baz\n"
+    "Foo, \"B\"\"ar\", Baz\n"
+    ;
+  char **result = split_on_unescaped_newlines(txt);
+
+  if ( !result[0] || !result[1] || !result[2] || !result[3] || result[4] ) {
+    printf( "test_split_on_unescaped_newlines failed! (1)\n" );
+    return;
+  }
+
+  if ( !strcmp(result[0], "Blah, blah, blah")
+  ||   !strcmp(result[1], "Foo, \"Bar\", \"Foo, Bar\"")
+  ||   !strcmp(result[2], "Foo, \"B\na\nr\", Baz")
+  ||   !strcmp(result[3], "Foo, \"B\"\"ar\", Baz") ) {
+    printf( "test_split_on_unescaped_newlines failed! (2)\n" );
+    return;
+  }
 }

@@ -2,6 +2,7 @@
 #define CSV_DOT_H_INCLUDE_GUARD
 char **parse_csv( const char *line );
 void free_csv_line( char **parsed );
+char **split_on_unescaped_newlines(const char *txt);
 
 #define READ_BLOCK_SIZE 65536
 
