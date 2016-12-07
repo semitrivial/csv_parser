@@ -30,7 +30,8 @@ int test_parse_csv(void)
   /*
    * Test string adapted from https://en.wikipedia.org/wiki/Comma-separated_values
    */
-  const char *test = "1996,Jeep,\"Venture \"\"Extended Edition\"\"\",\"MUST SELL!\nair, moon roof, loaded\",4799.00";
+  const char *test = 
+    "1996,Jeep,\"Venture \"\"Extended Edition\"\"\",\"MUST SELL!\nair, moon roof, loaded\",4799.00";
   char **parsed = parse_csv( test );
 
   if ( !parsed[0] || !parsed[1] || !parsed[2] || !parsed[3] || !parsed[4] ) {
