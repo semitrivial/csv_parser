@@ -8,7 +8,7 @@ the columns in that row.
 
 ## License: MIT
 
-## Documentation (Overview of files)
+## Overview of files
 
 csv.c:  For parsing a single line of CSV (a string with no unescaped linebreaks)
 
