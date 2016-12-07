@@ -51,6 +51,11 @@ static int count_fields( const char *line )
   return cnt;
 }
 
+/*
+ *  Given a string containing no linebreaks, or containing line breaks
+ *  which are escaped by "double quotes", extract a NULL-terminated
+ *  array of strings, one for every cell in the row.
+ */
 char **parse_csv( const char *line )
 {
   char **buf, **bptr, *tmp, *tptr;
