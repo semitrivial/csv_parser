@@ -40,17 +40,25 @@ while(0)
 char *fread_csv_line(FILE *fp, int max_line_size, int *err) {
     static FILE *bookmark;
     static char read_buf[READ_BLOCK_SIZE], *read_ptr, *read_end;
-    static int fread_len;
-    char *buf, *bptr, *limit;
+    static int fread_len, prev_max_line_size = -1;
+    static char *buf;
+    char *bptr, *limit;
     char ch;
     int fQuote;
 
-    buf = malloc( max_line_size + 2 );
-    if ( !buf ) {
-        if ( err ) {
-            *err = CSV_ERR_NO_MEMORY;
+    if ( max_line_size > prev_max_line_size ) {
+        if ( prev_max_line_size != -1 ) {
+            free( buf );
         }
-        return NULL;
+        buf = malloc( max_line_size + 2 );
+        if ( !buf ) {
+            if ( err ) {
+                *err = CSV_ERR_NO_MEMORY;
+            }
+            prev_max_line_size = -1;
+            return NULL;
+        }
+        prev_max_line_size = max_line_size;
     }
     bptr = buf;
     limit = buf + max_line_size;
@@ -65,7 +73,7 @@ char *fread_csv_line(FILE *fp, int max_line_size, int *err) {
 
         if ( !ch || (ch == '\n' && !fQuote)) {
             *bptr = '\0';
-            return buf;
+            return strdup(buf);
         }
 
         if ( bptr >= limit ) {
