@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "csv.h"
+#include "../csv.h"
 
 int test_parse_csv(void);
 int test_split_on_unescaped_newlines(void);
@@ -81,9 +81,7 @@ int test_split_on_unescaped_newlines(void) {
 }
 
 int test_fread_csv_line(void) {
-  FILE *fp = fopen("test.csv", "r");
-
-  fp = fopen("test.csv", "r");
+  FILE *fp = fopen("tests/test.csv", "r");
 
   if ( strcmp( fread_csv_line(fp, 1024, NULL), "foo,bar,baz" ) ) {
     return 0;
