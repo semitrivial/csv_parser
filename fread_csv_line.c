@@ -3,8 +3,20 @@
 #include <stdio.h>
 #include "csv.h"
 
-char read_buf[READ_BLOCK_SIZE], *read_ptr, *read_end;
-int fread_len;
+#define READ_BLOCK_SIZE 65536
+#define QUICK_GETC( ch, fp )\
+do\
+{\
+    if ( read_ptr == read_end )\
+    {\
+        fread_len = fread( read_buf, sizeof(char), READ_BLOCK_SIZE, fp );\
+        if ( fread_len < READ_BLOCK_SIZE )\
+            read_buf[fread_len] = '\0';\
+        read_ptr = read_buf;\
+    }\
+    ch = *read_ptr++;\
+}\
+while(0)
 
 /*
  * Given a file pointer, read a CSV line from that file.
@@ -27,6 +39,8 @@ int fread_len;
  */
 char *fread_csv_line(FILE *fp, int max_line_size, int *err) {
     static FILE *bookmark;
+    static char read_buf[READ_BLOCK_SIZE], *read_ptr, *read_end;
+    static int fread_len;
     char *buf, *bptr, *limit;
     char ch;
     int fQuote;
