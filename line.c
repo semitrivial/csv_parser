@@ -64,13 +64,13 @@ char **split_on_unescaped_newlines(const char *txt) {
                 return NULL;
             }
 
+            memcpy( *bptr, lineStart, len );
+            (*bptr)[len] = '\0';
+
             if ( *ptr ) {
-                memcpy( *bptr, lineStart, len );
-                (*bptr)[len] = '\0';
                 lineStart = ptr + 1;
                 bptr++;
             } else {
-                memcpy( *bptr, lineStart, len + 1 );
                 bptr[1] = NULL;
                 return buf;
             }
