@@ -65,3 +65,7 @@ parallel.
 Hopefully sometime in the future we'll add a proper `init` system to deal with the
 latter warning.
 
+## TODO
+
+In split.c and fread_csv_line.c:  Deal with carriage returns in OS's where
+"linebreak" doesn't mean "\n"
