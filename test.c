@@ -43,10 +43,10 @@ void test_split_on_unescaped_newlines(void) {
     return;
   }
 
-  if ( !strcmp(result[0], "Blah, blah, blah")
-  ||   !strcmp(result[1], "Foo, \"Bar\", \"Foo, Bar\"")
-  ||   !strcmp(result[2], "Foo, \"B\na\nr\", Baz")
-  ||   !strcmp(result[3], "Foo, \"B\"\"ar\", Baz") ) {
+  if ( strcmp(result[0], "Blah, blah, blah")
+  ||   strcmp(result[1], "Foo, \"Bar\", \"Foo, Bar\"")
+  ||   strcmp(result[2], "Foo, \"B\na\nr\", Baz")
+  ||   strcmp(result[3], "Foo, \"B\"\"ar\", Baz") ) {
     printf( "test_split_on_unescaped_newlines failed! (2)\n" );
     return;
   }

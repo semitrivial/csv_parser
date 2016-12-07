@@ -54,7 +54,13 @@ char **split_on_unescaped_newlines(const char *txt) {
         if ( *ptr == '\"' ) {
             fQuote = 1;
         } else if ( *ptr == '\n' || !*ptr ) {
-            size_t len = ptr - lineStart + 1;
+            size_t len = ptr - lineStart;
+
+            if ( len == 0 ) {
+                *bptr = NULL;
+                return buf;
+            }
+
             *bptr = malloc( len + 1 );
 
             if ( !*bptr ) {
