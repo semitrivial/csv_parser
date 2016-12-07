@@ -8,8 +8,16 @@ int fread_len;
 
 /*
  * Given a file pointer, read a CSV line from that file.
- * Advances file read location accordingly.
  * File may include newlines escaped with "double quotes".
+ *
+ * Warning: This function is optimized for the use case where
+ *   you repeatedly call it until the file is exhausted.  It is
+ *   very suboptimal for the use case of just grabbing one single
+ *   line of CSV and stopping.  Also, this function advances the
+ *   file position (in the fseek/ftell sense) unpredictably.  You
+ *   should not change the file position between calls to
+ *   fread_csv_line (e.g., don't use "getc" on the file in between
+ *   calls to fread_csv_line).
  *
  * Other arguments:
  * size_t max_line_size: Maximum line size, in bytes.
@@ -23,7 +31,7 @@ char *fread_csv_line(FILE *fp, int max_line_size, int *err) {
     char ch;
     int fQuote;
 
-    buf = malloc( max_line_size + 1 );
+    buf = malloc( max_line_size + 2 );
     if ( !buf ) {
         if ( err ) {
             *err = CSV_ERR_NO_MEMORY;
@@ -40,7 +48,6 @@ char *fread_csv_line(FILE *fp, int max_line_size, int *err) {
 
     for ( fQuote = 0; ; ) {
         QUICK_GETC(ch, fp);
-fread_csv_line_loop:
 
         if ( !ch || (ch == '\n' && !fQuote)) {
             *bptr = '\0';
@@ -59,10 +66,10 @@ fread_csv_line_loop:
         if ( fQuote ) {
             if ( ch == '\"' ) {
                 QUICK_GETC(ch, fp);
+                *bptr++ = ch; // This is why the "+2" in the buf malloc
                 if ( ch != '\"' ) {
                     fQuote = 0;
                 }
-                goto fread_csv_line_loop;
             }
         } else if ( ch == '\"' ) {
             fQuote = 1;
