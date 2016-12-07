@@ -1,2 +1,2 @@
 all:
-	gcc -g -Wall csv.c line.c test.c -o test
+	gcc -g -Wall csv.c split.c test.c -o test
