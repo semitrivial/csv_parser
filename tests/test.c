@@ -98,6 +98,9 @@ int test_fread_csv_line(void) {
   if ( strcmp( fread_csv_line(fp, 1024, NULL), "foo,\"\n\nb\n\n\"\"a\"\"\n\nr\n\n\",baz" ) ) {
     return 0;
   }
+  if ( strcmp( fread_csv_line(fp, 1024, NULL), "foo,bar,\"baz\"" ) ) {
+    return 0;
+  }
   if ( strcmp( fread_csv_line(fp, 1024, NULL), "foo,bar,baz" ) ) {
     return 0;
   }

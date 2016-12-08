@@ -50,7 +50,7 @@ char *fread_csv_line(FILE *fp, int max_line_size, int *err) {
         if ( prev_max_line_size != -1 ) {
             free( buf );
         }
-        buf = malloc( max_line_size + 2 );
+        buf = malloc( max_line_size + 1 );
         if ( !buf ) {
             if ( err ) {
                 *err = CSV_ERR_NO_MEMORY;
@@ -88,10 +88,15 @@ char *fread_csv_line(FILE *fp, int max_line_size, int *err) {
         if ( fQuote ) {
             if ( ch == '\"' ) {
                 QUICK_GETC(ch, fp);
-                *bptr++ = ch; // This is why the "+2" in the buf malloc
+
                 if ( ch != '\"' ) {
+                    if ( !ch || ch == '\n' ) {
+                        *bptr = '\0';
+                        return strdup(buf);
+                    }
                     fQuote = 0;
                 }
+                *bptr++ = ch;
             }
         } else if ( ch == '\"' ) {
             fQuote = 1;
