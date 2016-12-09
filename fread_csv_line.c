@@ -33,7 +33,7 @@ while(0)
  *
  * Other arguments:
  * size_t max_line_size: Maximum line size, in bytes.
- * int *err: (Optional) Pointer to an int where error code can be written.
+ * int *err: Pointer to an int where error code will be written.
  *
  * See csv.h for definitions of error codes.
  */
@@ -52,9 +52,7 @@ char *fread_csv_line(FILE *fp, int max_line_size, int *err) {
         }
         buf = malloc( max_line_size + 1 );
         if ( !buf ) {
-            if ( err ) {
-                *err = CSV_ERR_NO_MEMORY;
-            }
+            *err = CSV_ERR_NO_MEMORY;
             prev_max_line_size = -1;
             return NULL;
         }
@@ -78,9 +76,7 @@ char *fread_csv_line(FILE *fp, int max_line_size, int *err) {
 
         if ( bptr >= limit ) {
             free( buf );
-            if ( err ) {
-                *err = CSV_ERR_LONGLINE;
-            }
+            *err = CSV_ERR_LONGLINE;
             return NULL;
         }
         *bptr++ = ch;

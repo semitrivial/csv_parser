@@ -50,7 +50,7 @@ Given a file pointer, extract a line of CSV from it.
 Other arguments:
   int max_line_size:  a maximum line size.  Lines longer than this will
     cause fread_csv_line to return NULL.
-  int *err: An optional pointer to an int where error codes will be
+  int *err:  Pointer to an int where error codes will be
     written.  The two error codes, defined in `csv.h`, are:
     CSV_ERR_LONGLINE and CSV_ERR_NO_MEMORY.
 
