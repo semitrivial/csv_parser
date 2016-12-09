@@ -81,33 +81,37 @@ int test_split_on_unescaped_newlines(void) {
 }
 
 int test_fread_csv_line(void) {
+  int err, done = 0;
   FILE *fp = fopen("tests/test.csv", "r");
 
-  if ( strcmp( fread_csv_line(fp, 1024, NULL), "foo,bar,baz" ) ) {
+  if ( strcmp( fread_csv_line(fp, 1024, &done, &err), "foo,bar,baz" ) || done ) {
     return 0;
   }
-  if ( strcmp( fread_csv_line(fp, 1024, NULL), "foo,\"bar\",baz" ) ) {
+  if ( strcmp( fread_csv_line(fp, 1024, &done, &err), "foo,\"bar\",baz" ) || done ) {
     return 0;
   }
-  if ( strcmp( fread_csv_line(fp, 1024, NULL), "foo,\"b\"\"ar\",baz" ) ) {
+  if ( strcmp( fread_csv_line(fp, 1024, &done, &err), "foo,\"b\"\"ar\",baz" ) || done ) {
     return 0;
   }
-  if ( strcmp( fread_csv_line(fp, 1024, NULL), "foo,\"b\na\nr\",baz" ) ) {
+  if ( strcmp( fread_csv_line(fp, 1024, &done, &err), "foo,\"b\na\nr\",baz" ) || done ) {
     return 0;
   }
-  if ( strcmp( fread_csv_line(fp, 1024, NULL), "foo,\"\n\nb\n\n\"\"a\"\"\n\nr\n\n\",baz" ) ) {
+  if ( strcmp( fread_csv_line(fp, 1024, &done, &err), "foo,\"\n\nb\n\n\"\"a\"\"\n\nr\n\n\",baz" ) || done ) {
     return 0;
   }
-  if ( strcmp( fread_csv_line(fp, 1024, NULL), "foo,bar,\"baz\"" ) ) {
+  if ( strcmp( fread_csv_line(fp, 1024, &done, &err), "foo,bar,\"baz\"" ) || done ) {
     return 0;
   }
-  if ( strcmp( fread_csv_line(fp, 1024, NULL), "foo,bar,\"\"baz\"\"" ) ) {
+  if ( strcmp( fread_csv_line(fp, 1024, &done, &err), "foo,bar,\"\"baz\"\"" ) || done ) {
     return 0;
   }
-  if ( strcmp( fread_csv_line(fp, 1024, NULL), "foo,bar,\"\"\"baz\"\"\"" ) ) {
+  if ( strcmp( fread_csv_line(fp, 1024, &done, &err), "foo,bar,\"\"\"baz\"\"\"" ) || done ) {
     return 0;
   }
-  if ( strcmp( fread_csv_line(fp, 1024, NULL), "foo,bar,baz" ) ) {
+  if ( strcmp( fread_csv_line(fp, 1024, &done, &err), "foo,bar,baz" ) || done ) {
+    return 0;
+  }
+  if ( strcmp( fread_csv_line(fp, 1024, &done, &err), "" ) || !done ) {
     return 0;
   }
   return 1;
