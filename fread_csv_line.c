@@ -33,11 +33,15 @@ while(0)
  *
  * Other arguments:
  * size_t max_line_size: Maximum line size, in bytes.
+ * int *done: Pointer to an int that will be set to 1 when file is exhausted.
  * int *err: Pointer to an int where error code will be written.
+ *
+ * Warning: Calling this function on an exhausted file (as indicated by the
+ *   'done' flag) is undefined behavior.
  *
  * See csv.h for definitions of error codes.
  */
-char *fread_csv_line(FILE *fp, int max_line_size, int *err) {
+char *fread_csv_line(FILE *fp, int max_line_size, int *done, int *err) {
     static FILE *bookmark;
     static char read_buf[READ_BLOCK_SIZE], *read_ptr, *read_end;
     static int fread_len, prev_max_line_size = -1;
@@ -70,8 +74,7 @@ char *fread_csv_line(FILE *fp, int max_line_size, int *err) {
         QUICK_GETC(ch, fp);
 
         if ( !ch || (ch == '\n' && !fQuote)) {
-            *bptr = '\0';
-            return strdup(buf);
+            break;
         }
 
         if ( bptr >= limit ) {
@@ -87,8 +90,7 @@ char *fread_csv_line(FILE *fp, int max_line_size, int *err) {
 
                 if ( ch != '\"' ) {
                     if ( !ch || ch == '\n' ) {
-                        *bptr = '\0';
-                        return strdup(buf);
+                        break;
                     }
                     fQuote = 0;
                 }
@@ -98,4 +100,8 @@ char *fread_csv_line(FILE *fp, int max_line_size, int *err) {
             fQuote = 1;
         }
     }
+
+    *done = !ch;
+    *bptr = '\0';
+    return strdup(buf);
 }

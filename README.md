@@ -43,13 +43,14 @@ Both the array and the strings in the array are `malloc`'d.
 
 ## Documentation (fread_csv_line.c)
 
-    char *fread_csv_line(FILE *fp, int max_line_size, int *err)
+    char *fread_csv_line(FILE *fp, int max_line_size, int *done, int *err)
 
 Given a file pointer, extract a line of CSV from it.
 
 Other arguments:
   int max_line_size:  a maximum line size.  Lines longer than this will
     cause fread_csv_line to return NULL.
+  int *done:  Pointer to an int which will be set to 1 if the end of fp is reached.
   int *err:  Pointer to an int where error codes will be
     written.  The two error codes, defined in `csv.h`, are:
     CSV_ERR_LONGLINE and CSV_ERR_NO_MEMORY.
@@ -60,10 +61,11 @@ sense) in unpredictable ways, and will break if other things tamper with the fil
 position in between calls to fread_csv_line.
 
 Warning: `fread_csv_line` will not work correctly if called on different files in
-parallel.
+parallel.  (Hopefully sometime in the future we'll add a proper `init` system to
+deal with this).
 
-Hopefully sometime in the future we'll add a proper `init` system to deal with the
-latter warning.
+Warning: Calling fread_csv_line on fp after a previous call exhausted the file
+  (indicated by *done), is undefined behavior.
 
 ## TODO
 
