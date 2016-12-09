@@ -64,10 +64,10 @@ Warning: `fread_csv_line` will not work correctly if called on different files i
 parallel.  (Hopefully sometime in the future we'll add a proper `init` system to
 deal with this).
 
-Warning: Calling fread_csv_line on fp after a previous call exhausted the file
-  (indicated by *done), is undefined behavior.
+Warning: Calling `fread_csv_line` on `fp` after a previous call exhausted the file
+  (indicated by `*done`), is undefined behavior.
 
 ## TODO
 
-In split.c and fread_csv_line.c:  Deal with carriage returns in OS's where
+In `split.c` and `fread_csv_line.c`:  Deal with carriage returns in OS's where
 "linebreak" doesn't mean "\n"
