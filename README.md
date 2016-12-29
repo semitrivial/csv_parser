@@ -47,21 +47,23 @@ Both the array and the strings in the array are `malloc`'d.
 
 Extract a line of CSV from a file.
 
-Other arguments:
-  int max_line_size:  a maximum line size.  Lines longer than this will
-    cause fread_csv_line to return NULL.
-  int *done:  Pointer to an int.  The int is set to `1` when the end of `fp` 
-    is reached.
-  int *err:  Pointer to an int where error codes will be written.  The error
-    codes are defined in `csv.h`: `CSV_ERR_LONGLINE` and `CSV_ERR_NO_MEMORY`.
+`max_line_size`: Lines longer than this will cause `fread_csv_line` to return
+`NULL`.
 
-Warning: `fread_csv_line` is optimized for repeating until the file is
-exhausted.  It mutates/depends on file position (in the `fseek` sense), in an
-unpredictable way.
+`done`: Pointer to an int.  The int is set to `1` when the end of `fp` is
+reached.
 
-Warning: `fread_csv_line` shouldn't be called on different files in parallel.
-(Hopefully sometime in the future we'll add a proper `init` system to deal with
-this).
+`err`: Pointer to an int.  On error, an error code will be written to this int.
+Error codes are defined in `csv.h`: `CSV_ERR_LONGLINE` and `CSV_ERR_NO_MEMORY`.
+
+## Caveats
+
+`fread_csv_line` is optimized for repeating until the file is exhausted.  It
+mutates/depends on file position (in the `fseek` sense), in an unpredictable
+way.
+
+`fread_csv_line` shouldn't be called on different files in parallel. (Hopefully
+sometime in the future we'll add a proper `init` system to deal with this).
 
 Calling `fread_csv_line` on `fp` after a previous call exhausted the file
 (indicated by `*done`) is undefined behavior.
