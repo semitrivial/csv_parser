@@ -1,8 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-void free_csv_line( char **parsed )
-{
+void free_csv_line( char **parsed ) {
     char **ptr;
 
     for ( ptr = parsed; *ptr; ptr++ ) {
@@ -12,19 +11,14 @@ void free_csv_line( char **parsed )
     free( parsed );
 }
 
-static int count_fields( const char *line )
-{
+static int count_fields( const char *line ) {
     const char *ptr;
     int cnt, fQuote;
 
-    for ( cnt = 1, fQuote = 0, ptr = line; *ptr; ptr++ )
-    {
-        if ( fQuote )
-        {
-            if ( *ptr == '\"' )
-            {
-                if ( ptr[1] == '\"' )
-                {
+    for ( cnt = 1, fQuote = 0, ptr = line; *ptr; ptr++ ) {
+        if ( fQuote ) {
+            if ( *ptr == '\"' ) {
+                if ( ptr[1] == '\"' ) {
                     ptr++;
                     continue;
                 }
@@ -33,8 +27,7 @@ static int count_fields( const char *line )
             continue;
         }
 
-        switch( *ptr )
-        {
+        switch( *ptr ) {
             case '\"':
                 fQuote = 1;
                 continue;
@@ -58,8 +51,7 @@ static int count_fields( const char *line )
  *  which are escaped by "double quotes", extract a NULL-terminated
  *  array of strings, one for every cell in the row.
  */
-char **parse_csv( const char *line )
-{
+char **parse_csv( const char *line ) {
     char **buf, **bptr, *tmp, *tptr;
     const char *ptr;
     int fieldcnt, fQuote, fEnd;
@@ -78,26 +70,21 @@ char **parse_csv( const char *line )
 
     tmp = malloc( strlen(line) + 1 );
 
-    if ( !tmp )
-    {
+    if ( !tmp ) {
         free( buf );
         return NULL;
     }
 
     bptr = buf;
 
-    for ( ptr = line, fQuote = 0, *tmp = '\0', tptr = tmp, fEnd = 0; ; ptr++ )
-    {
-        if ( fQuote )
-        {
+    for ( ptr = line, fQuote = 0, *tmp = '\0', tptr = tmp, fEnd = 0; ; ptr++ ) {
+        if ( fQuote ) {
             if ( !*ptr ) {
                 break;
             }
 
-            if ( *ptr == '\"' )
-            {
-                if ( ptr[1] == '\"' )
-                {
+            if ( *ptr == '\"' ) {
+                if ( ptr[1] == '\"' ) {
                     *tptr++ = '\"';
                     ptr++;
                     continue;
@@ -111,8 +98,7 @@ char **parse_csv( const char *line )
             continue;
         }
 
-        switch( *ptr )
-        {
+        switch( *ptr ) {
             case '\"':
                 fQuote = 1;
                 continue;
@@ -122,8 +108,7 @@ char **parse_csv( const char *line )
                 *tptr = '\0';
                 *bptr = strdup( tmp );
 
-                if ( !*bptr )
-                {
+                if ( !*bptr ) {
                     for ( bptr--; bptr >= buf; bptr-- ) {
                         free( *bptr );
                     }

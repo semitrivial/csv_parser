@@ -7,11 +7,11 @@
 #define QUICK_GETC( ch, fp )\
 do\
 {\
-    if ( read_ptr == read_end )\
-    {\
+    if ( read_ptr == read_end ) {\
         fread_len = fread( read_buf, sizeof(char), READ_BLOCK_SIZE, fp );\
-        if ( fread_len < READ_BLOCK_SIZE )\
+        if ( fread_len < READ_BLOCK_SIZE ) {\
             read_buf[fread_len] = '\0';\
+        }\
         read_ptr = read_buf;\
     }\
     ch = *read_ptr++;\
