@@ -122,9 +122,9 @@ char **parse_csv( const char *line ) {
                 tptr = tmp;
 
                 if ( fEnd ) {
-                  break;
+                    break;
                 } else {
-                  continue;
+                    continue;
                 }
 
             default:
