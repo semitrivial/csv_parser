@@ -15,10 +15,6 @@ char **split_on_unescaped_newlines(const char *txt) {
     for ( nLines = 1, ptr = txt, fQuote = 0; *ptr; ptr++ ) {
         if ( fQuote ) {
             if ( *ptr == '\"' ) {
-                if ( ptr[1] == '\"' ) {
-                    ptr++;
-                    continue;
-                }
                 fQuote = 0;
             }
         } else if ( *ptr == '\"' ) {
