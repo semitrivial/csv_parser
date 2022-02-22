@@ -18,10 +18,6 @@ static int count_fields( const char *line ) {
     for ( cnt = 1, fQuote = 0, ptr = line; *ptr; ptr++ ) {
         if ( fQuote ) {
             if ( *ptr == '\"' ) {
-                if ( ptr[1] == '\"' ) {
-                    ptr++;
-                    continue;
-                }
                 fQuote = 0;
             }
             continue;
