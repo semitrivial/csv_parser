@@ -35,10 +35,6 @@ char **split_on_unescaped_newlines(const char *txt) {
     for ( bptr = buf, ptr = txt, fQuote = 0; ; ptr++ ) {
         if ( fQuote ) {
             if ( *ptr == '\"' ) {
-                if ( ptr[1] == '\"' ) {
-                    ptr++;
-                    continue;
-                }
                 fQuote = 0;
                 continue;
             } else if ( *ptr ) {
